@@ -1,0 +1,46 @@
+name: tets CI
+
+on:
+	push:
+		branches:
+			- main
+
+jobs:
+	build:
+		runs-on: ubuntu-latest
+		steps:
+			- name: Checkout Code
+			uses: actions/checkout@v3
+
+			- name: Install node
+			uses: actions/setup-node@v3
+			with: 
+				node-version : 22.
+			
+			- name: Build Project
+			run: |
+				cd test
+				npm install
+			
+			- name: Upload artifacts to ebable deployment
+			uses: actions/updload-artifacts@v3
+			with:
+				name: production file
+				path: ./test/build
+
+	deploy:
+		needs: build
+
+		runs-on: ubuntu-latest
+		steps:
+			- name: Download artifact
+			uses: actions/download-artifacts@v3
+			with:
+				name: production file
+				path: ./test/build
+
+			- name: Deploy to GitHub Pages
+			uses: peaceiris/actions-gh-pages@v3
+			with:
+				github_token: ${{ secrets.KEY }} 
+				publish_dir: ./test/build
