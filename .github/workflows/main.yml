@@ -19,14 +19,13 @@ jobs:
 
       - name: Build Project
         run: |
-          cd test
           npm install
 
       - name: Upload artifacts to enable deployment
         uses: actions/upload-artifact@v3
         with:
           name: production-file
-          path: ./test/build
+          path: ./build
 
   deploy:
     needs: build
@@ -41,4 +40,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.KEY }}
-          publish_dir: ./test/build
+          publish_dir: ./build
