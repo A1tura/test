@@ -25,16 +25,16 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: production-file
-          path: ./build
+          path: ./build/
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      # - name: Download artifact
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: production-file
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: production-file
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
